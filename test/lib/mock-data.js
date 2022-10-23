@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs')
 const { v4: uuid } = require('uuid')
 const authService = require('app/modules/auth')
 const userService = require('app/modules/user')
+const noteService = require('app/modules/note')
 
 class MockData {
   /**
@@ -55,6 +56,25 @@ class MockData {
       options
     )
     return userService.create(data)
+  }
+
+  mockNote(options = {user}) {
+    const data = Object.assign(
+      {
+        title: 'Test Title',
+        message: 'Test Message',
+        owner: options.user
+      },
+      options
+    )
+    return noteService.create(data).then(dbNote => {
+      // returns user with updated notes
+      return userService.findByIdAndUpdate(
+        options.user,
+        { $push: { notes: dbNote.id } },
+        { new: true, useFindAndModify: false }
+      )
+    })
   }
 }
 

@@ -20,7 +20,13 @@ class UserModel extends Model {
         index: {
           unique: true
         }
-      }
+      },
+      notes: [{
+        // type: Schema.Types.ObjectId,
+        type: String,
+        ref: "Note",
+        required: false
+      }]
     }
   }
 }

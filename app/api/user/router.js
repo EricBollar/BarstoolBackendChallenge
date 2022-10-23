@@ -13,4 +13,10 @@ module.exports = (router) => {
     await validator.update(req)
     await controller.update(req, res)
   })
+
+  // gets notes for current user
+  router.get('/user/:id/notes', async (req, res) => {
+    await auth.requiresCurrentUser(req)
+    await controller.readNotes(req, res)
+  })
 }
